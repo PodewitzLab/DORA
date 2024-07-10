@@ -109,11 +109,13 @@ class DORA: #the transition state explorer
 
         w = 1000
         self.u = self.distance_data[self.dE_data.index(min(self.dE_data))]
-        popt_morse, pcov_morse = curve_fit(self.morse, self.distance_data+[self.distance_data[-1]]*w+[self.distance_data[0]]*w,
-                                           self.dE_data+[self.dE_data[-1]]*w+[self.dE_data[0]]*w,
-                                           p0=tstart, maxfev=4000000)
+        popt_morse, pcov_morse = curve_fit(self.morse, self.distance_data+[self.distance_data[-1]]*w+[self.distance_data[0]]*w
+                                           , self.dE_data+[self.dE_data[-1]]*w+[self.dE_data[0]]*w,
+                                         p0=tstart,maxfev=4000000)
 
-
+        
+        # p0=tstart
+        
         # tight list of dE fit
         for i in range(len(self.tight_distance)):
             self.dE_fit.append(self.morse(self.tight_distance[i],*popt_morse))
@@ -156,7 +158,7 @@ class DORA: #the transition state explorer
                 break
 
 
-            elif j==self.max_iteration:
+            elif j==self.max_iteration-1:
                 print("Last iteratation reached! Change parameters k_start and/or k_step!")
 
                 
