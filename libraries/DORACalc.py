@@ -8,10 +8,10 @@ class DORA: #the transition state explorer
                 dE_data,
                 dE_A, dE_B,
                 TdS_AB, TdS_A, TdS_B,
-                y_cleave=0.01,
+                y_cleave=0.02,
                 k_start=10,
                 max_iteration=1000,
-                k_step=1,
+                k_step=0.1,
                 r_cleave = 0,
                 D_name = "Descriptor",
                 infinite_distance=10,
@@ -86,7 +86,10 @@ class DORA: #the transition state explorer
         self.k = self.k_start
 
         #fitting for descriptor
-        popt, pcov = curve_fit(self.exp_falling,self.distance_data[:len(self.descriptor_data)],self.descriptor_data, maxfev=45000)
+        popt, pcov = curve_fit(self.exp_falling,self.distance_data[:len(self.descriptor_data)],self.descriptor_data, maxfev=45000, p0 = [1,1,0])
+        
+        ## old -- testing initial guess
+          # popt, pcov = curve_fit(self.exp_falling,self.distance_data[:len(self.descriptor_data)],self.descriptor_data, maxfev=45000)
         
         # make tightly spaced list for descriptor
         for i in range(len(self.tight_distance)):
