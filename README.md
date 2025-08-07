@@ -9,7 +9,7 @@
 - Fits electronic energy scan (`dE`) using a Morse potential.
 - Approximates entropy contributions (`TdS`) with a sigmoid function, using entropic contributions of both equilibrium structures (`TdS_AB` and `TdS_A` + `TdS_B`).
 - Calculates Gibbs free energy (`dG = dE + TdS`) and localizes the transition state.
-- 
+
 ## Requirements
 
 - Python 3
