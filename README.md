@@ -1,6 +1,9 @@
 # DORA: Transition State Explorer (v1.a)
 
-**DORA** is a Python class for analyzing molecular dissociation pathways. It identifies the transition state by fitting energy and entropy data along a reaction coordinate using physical models. The characterization of the transition state is done using a quantum chemical descriptor of choice.
+**DORA** is a Jupyter Notebook for analyzing barrierless molecular dissociation reactions. It identifies the transition state by fitting energy and entropy data along a reaction coordinate using physical models. The characterization of the transition state is done using a quantum chemical descriptor of choice.
+
+![image not found](./libraries/Scheme.png)
+
 
 ## Features
 
@@ -18,6 +21,17 @@
 
 
 ## Usage
+
+In order to calculate dissociation barriers with DORA, the user has to first calculate the following data using a quantum chemical program of choice:
+
+- The electronic energy of a (relaxed) surface scan of the system in question. This can be done by increasing the intramolecular distance between the atoms participating in the bond, that should be broken during the dissociation process, while optimising the geometries for each step. [Here](https://www.faccts.de/docs/orca/6.1/manual/contents/structurereactivity/optimizations_scans.html?q=relaxed+surface+scan&n=0#surface-scans) you can find instructions on how this can be done in [ORCA 6.1.](https://www.faccts.de/orca/) Note that for some cases, certain geometry restrains can be invoked, to counteract any unwanted behaviour during the dissociation process.
+- Data of the descriptor of choice for each structure resulting from the dissociation scan. We recommend the Intrinsic Bond Strength Index (IBSI), which can be computed using the wave-analysis program [Multiwfn](http://sobereva.com/multiwfn/). Note that this method relies on the fact that the descriptor used shows an exponentially decaying behaviour.
+- The intramolecular distance gained from the (relaxed) surface scan.
+- The entropic contributions of the optimzed educt structure
+- The electronic energy of both fragments, individually
+- The entropic contributions of both fragments, individually
+
+Below, one can find a description of the input variables for DORA. The user is also provided a dummy example in the Notebook itself for ease of usage.
 
 ```
 from dora import DORA
@@ -38,8 +52,11 @@ y_cleave ...                                              # Parameter that defin
 model = DORA(descriptor_data, distance_data, dE_data,     # Initializes DORA calculation with given parameters
              dE_A, dE_B, TdS_AB, TdS_A, TdS_B)
 
-input_data, output_data = model.run()                     # runs DORA calculation and saves given input and output data in input_data and output_data, respectively
-plotter(model.run())                                      # runs calculation and plots results 
+results = model.run()                     # Runs DORA calculation and saves given input and output data
+
+plotter(results)                          # Generates an optional plot to visualize the results
+
+PrintFits(results, savepath)              # Creates two files, containing the datapoints of all the fit-functions and a file containing the results and important parameters: DORA_Fit_data.dat and DORA_Results.dat
 ```
 
 
@@ -84,3 +101,4 @@ self.infinite_distance ]
 Optinally, the user can print an output plot for the DORA calculation. Note that a visual examination may help spot mistakes in the setup of the calculation.
 
 ![image not found](./libraries/example_output.png)
+
